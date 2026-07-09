@@ -200,16 +200,18 @@ Backend tests cover: batching, date normalization, the skip rule, enum fallback/
    - `FRONTEND_URL` = your Vercel URL (add after deploying frontend, e.g. `https://your-app.vercel.app`)
    - `NODE_ENV` = `production`
 
-### Frontend → Vercel
+### Frontend → Netlify
 
-1. New Project → same repo
-2. **Root Directory:** `frontend`
-3. **Framework:** Next.js (auto-detected)
-4. Add environment variable:
-   - `NEXT_PUBLIC_API_URL` = your Render backend URL (e.g. `https://your-backend.onrender.com`)
-5. Deploy
+1. Go to [netlify.com](https://netlify.com) → **Add new site** → **Import an existing project**
+2. Connect GitHub → select `growth_assignment`
+3. Set **Base directory:** `frontend`
+4. **Build command:** `npm run build` (auto-detected from `netlify.toml`)
+5. **Publish directory:** `.next` (auto-detected from `netlify.toml`)
+6. Add environment variable:
+   - `NEXT_PUBLIC_API_URL` = your Render backend URL (e.g. `https://growth-assignment.onrender.com`)
+7. Deploy — note down the URL e.g. `https://growth-assignment.netlify.app`
 
-After both are live, go back to Render → update `FRONTEND_URL` to your actual Vercel URL → this fixes CORS and triggers a redeploy automatically.
+After both are live, go back to Render → update `FRONTEND_URL` to your actual Netlify URL → this fixes CORS and triggers a redeploy automatically.
 
 > **Note:** Render free-tier services spin down after 15 min of inactivity. The first request after spin-down takes ~30s to cold-start. Upgrade to a paid instance if you need always-on.
 
@@ -225,7 +227,7 @@ After both are live, go back to Render → update `FRONTEND_URL` to your actual 
 - [x] Dark mode
 - [x] Unit tests (backend + frontend)
 - [x] Docker setup (both services + docker-compose)
-- [x] Deployment — Vercel (frontend) + Render (backend) with Groq AI
+- [x] Deployment — Netlify (frontend) + Render (backend) with Groq AI
 
 ## Possible future improvements
 
