@@ -13,12 +13,20 @@ export function createApp() {
 
   app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
 
-  // FRONTEND_URL may be a comma-separated list for local dev
-  // (Next.js falls back to port 3001 when 3000 is taken).
+  // FRONTEND_URL may be a comma-separated list.
+  // In production, set this to your Netlify URL on Render's env vars.
   const allowedOrigins = config.FRONTEND_URL.split(",").map((o) => o.trim()).filter(Boolean);
+
   app.use(
     cors({
-      origin: allowedOrigins.length === 1 ? allowedOrigins[0] : allowedOrigins,
+      origin: (origin, callback) => {
+        // Allow requests with no origin (curl, Postman, server-to-server)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.includes(origin)) return callback(null, true);
+        // Also allow any *.netlify.app subdomain for preview deploys
+        if (/^https:\/\/[a-z0-9-]+\.netlify\.app$/.test(origin)) return callback(null, true);
+        callback(new Error(`CORS: origin ${origin} not allowed`));
+      },
       methods: ["GET", "POST"],
     })
   );
